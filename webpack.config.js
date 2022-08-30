@@ -1,6 +1,11 @@
 //'path' ya está disponible en node, no hay que instalar la dependencia
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// Llamamos al plugin de css
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// Para copy
+const CopyPlugin = require('copy-webpack-plugin');
+
 
 // Aquí vamos a tener la configuración
 module.exports = {
@@ -30,6 +35,18 @@ module.exports = {
         use: {
           loader: 'babel-loader'
         }
+      },
+      // Ahora la rregla para css (Y preprocesador stylus)
+      {
+        // Todo lo que empiece por '.css'
+        // test: /\.css$/i,
+        // Ahora para que reconozca archivos de stylus '.styl'
+        test: /\.css|.styl$/i,
+        use: [MiniCssExtractPlugin.loader, 
+        'css-loader',
+        // Agregamos el loader de stylus
+        'stylus-loader'
+        ]
       }
     ]
   },
@@ -42,6 +59,15 @@ module.exports = {
       template: './public/index.html',
       // El template lo va a poner en la carpeta dist como index.html, de acuerdo a como lo configuremos
       filename: './index.html'
-    })
+    }),
+    new MiniCssExtractPlugin(),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "src", "assets/images"), // Usamos el path que ya definimos
+          to: "assets/images"
+        }
+      ]
+    }),
   ]
 }
