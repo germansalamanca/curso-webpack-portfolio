@@ -16,7 +16,9 @@ module.exports = {
     // Aquí usamos path para usar su 'método' resolve, que nos permite identificar el directorio de nuestro proyecto
     path: path.resolve(__dirname, 'dist'), // 'dist' es el estandar
     // El resultante donde se va a unificar el js
-    filename: 'main.js'
+    filename: 'main.js',
+    // Esto es para las imágenes pero no lo explicó bien: es para que mueva las img dentro de assets (clase 11) 
+    assetModuleFilename: 'assets/images/[hash][ext][query]'
   },
   // Con qué extensiones vamos a trabajar
   resolve: {
@@ -52,6 +54,21 @@ module.exports = {
       {
         test: /\.png/,
         type: 'asset/resource'
+      },
+      // Regla para optimizar las fuentes que usamos localmente y ya no de gugol
+      {
+        test: /\.(woff|woff2)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            mimetype: "application/font-woff",
+            name: "[name].[ext]",
+            outputPath: "./assets/fonts/",
+            publicPath: "./assets/fonts/",
+            esModule: false
+          }
+        }
       }
     ]
   },
