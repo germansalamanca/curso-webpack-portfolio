@@ -28,7 +28,14 @@ module.exports = {
   },
   // Con qué extensiones vamos a trabajar
   resolve: {
-    extensions: ['.js']
+    extensions: ['.js'],
+    // Clase 13: Alias: Aquí vamos a crear los alias para utils, templates, estilos e imágenes
+    alias: {
+      '@utils': path.resolve(__dirname, 'src/utils'),
+      '@templates': path.resolve(__dirname, 'src/templates/'),
+      '@styles': path.resolve(__dirname, 'src/styles/'),
+      '@images': path.resolve(__dirname, 'src/assets/images/'),
+    }
   },
   // Añadimos module si queremos usar babel
   module: {
@@ -71,7 +78,7 @@ module.exports = {
             mimetype: "application/font-woff",
             name: "[name].[contenthash].[ext]",
             outputPath: "./assets/fonts/",
-            publicPath: "./assets/fonts/",
+            publicPath: "../assets/fonts/",
             esModule: false
           }
         }
