@@ -5,18 +5,24 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // Para copy
 const CopyPlugin = require('copy-webpack-plugin');
+// Para minificar css
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+// Terser que es para minificar js
+const TerserPlugin = require('terser-webpack-plugin');
 
 
 // Aquí vamos a tener la configuración
 module.exports = {
   // el punto de entrada de nuestra app
   entry: './src/index.js',
-  // Output es hacia dónde vamos a enviar lo que va a preparar webpack. Puede ser un nombre de carpeta o de archivo. En este caso es dist, que se referencia con psth.resolve
+  // Output es hacia dónde vamos a enviar lo que va a preparar webpack. Puede ser un nombre de carpeta o de archivo. En este caso es dist, que se referencia con path.resolve
   output: {
     // Aquí usamos path para usar su 'método' resolve, que nos permite identificar el directorio de nuestro proyecto
     path: path.resolve(__dirname, 'dist'), // 'dist' es el estandar
     // El resultante donde se va a unificar el js
-    filename: 'main.js',
+    //filename: 'main.js',
+    // Pero ahora con un hash:
+    filename: '[name].[contenthash].js', // Esto también se lo vamos a poner a las fuentes
     // Esto es para las imágenes pero no lo explicó bien: es para que mueva las img dentro de assets (clase 11) 
     assetModuleFilename: 'assets/images/[hash][ext][query]'
   },
@@ -63,7 +69,7 @@ module.exports = {
           options: {
             limit: 10000,
             mimetype: "application/font-woff",
-            name: "[name].[ext]",
+            name: "[name].[contenthash].[ext]",
             outputPath: "./assets/fonts/",
             publicPath: "./assets/fonts/",
             esModule: false
@@ -82,7 +88,10 @@ module.exports = {
       // El template lo va a poner en la carpeta dist como index.html, de acuerdo a como lo configuremos
       filename: './index.html'
     }),
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      // Para que el nombre tenga el hash
+      filename: 'assets/[name].[contenthash].css'
+    }),
     new CopyPlugin({
       patterns: [
         {
@@ -90,6 +99,13 @@ module.exports = {
           to: "assets/images"
         }
       ]
-    }),
-  ]
+    })
+  ],
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new CssMinimizerPlugin(),
+      new TerserPlugin(),
+    ]
+  }
 }
