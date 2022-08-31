@@ -47,6 +47,11 @@ module.exports = {
         // Agregamos el loader de stylus
         'stylus-loader'
         ]
+      },
+      // Agregamos la regla para las imágenes
+      {
+        test: /\.png/,
+        type: 'asset/resource'
       }
     ]
   },
