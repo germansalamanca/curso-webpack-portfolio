@@ -9,6 +9,8 @@ const CopyPlugin = require('copy-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 // Terser que es para minificar js
 const TerserPlugin = require('terser-webpack-plugin');
+// Configurar dotenv
+const Dotenv = require('dotenv-webpack');
 
 
 // Aquí vamos a tener la configuración
@@ -106,7 +108,8 @@ module.exports = {
           to: "assets/images"
         }
       ]
-    })
+    }),
+    new Dotenv(),
   ],
   optimization: {
     minimize: true,
