@@ -11,6 +11,8 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // Configurar dotenv
 const Dotenv = require('dotenv-webpack');
+// Clean (para impiar archivos)
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 
 // Aquí vamos a tener la configuración
@@ -110,6 +112,7 @@ module.exports = {
       ]
     }),
     new Dotenv(),
+    new CleanWebpackPlugin()
   ],
   optimization: {
     minimize: true,
